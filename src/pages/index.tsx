@@ -29,25 +29,48 @@ interface HomeProps {
 export default function Home() {
   return (
     <main className={`${styles.homeContainer} ${commonStyles.container}`}>
-      <Link href="#">
-        <h1>Title</h1>
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis quidem
-          voluptates voluptatum perferendis tempora fugit eos similique
-          voluptas, est doloribus quod inventore maxime nulla autem laudantium
-          qui, suscipit, ad excepturi!
-        </p>
-        <div>
-          <time>
-            <FiCalendar />
-            19 abr 2021
-          </time>
+      <div>
+        <Link href="#">
+          <strong>Title</strong>
           <p>
-            <FiUser />
-            Adriana Calcanhoto
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis
+            quidem voluptates voluptatum perferendis tempora fugit eos similique
+            voluptas, est doloribus quod inventore maxime nulla autem laudantium
+            qui, suscipit, ad excepturi!
           </p>
-        </div>
-      </Link>
+          <div>
+            <span>
+              <FiCalendar />
+              19 abr 2021
+            </span>
+            <span>
+              <FiUser />
+              Adriana Calcanhoto
+            </span>
+          </div>
+        </Link>
+
+        <Link href="#">
+          <strong>Title</strong>
+          <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis
+            quidem voluptates voluptatum perferendis tempora fugit eos similique
+            voluptas, est doloribus quod inventore maxime nulla autem laudantium
+            qui, suscipit, ad excepturi!
+          </p>
+          <div>
+            <span>
+              <FiCalendar />
+              19 abr 2021
+            </span>
+            <span>
+              <FiUser />
+              Adriana Calcanhoto
+            </span>
+          </div>
+        </Link>
+      </div>
+      <a className={styles.loadMore}>Carregar mais posts</a>
     </main>
   );
 }
