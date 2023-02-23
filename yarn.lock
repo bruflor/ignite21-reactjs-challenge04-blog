@@ -4100,6 +4100,11 @@ next-auth@^4.19.2:
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
 
+next-router-provider@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/next-router-provider/-/next-router-provider-0.6.0.tgz#fdf251c4dd5ab091ae5a788b7c2721923dd64283"
+  integrity sha512-CAAxH8EnauaJb14xyCqYLPwqydHWpeceFwGL255ss7RTSBkcqEFo/skN1nDQ/Yc0ps0HwBnMx05mHVgJnmiC4w==
+
 next@13.1.6:
   version "13.1.6"
   resolved "https://registry.yarnpkg.com/next/-/next-13.1.6.tgz#054babe20b601f21f682f197063c9b0b32f1a27c"
