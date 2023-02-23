@@ -1,4 +1,13 @@
+import Link from 'next/link';
+import styles from './header.module.scss';
+import commonStyles from '../../styles/common.module.scss';
+
 export default function Header() {
-  // TODO
-  return <h1>Header</h1>;
+  return (
+    <div className={`${commonStyles.container} ${styles.nav}`}>
+      <Link href="/">
+        <img src="/Logo.svg" alt="logo" />
+      </Link>
+    </div>
+  );
 }
