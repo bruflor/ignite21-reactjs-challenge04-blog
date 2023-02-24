@@ -17,10 +17,6 @@ interface Post {
   };
 }
 
-interface Posts {
-  posts: Post[];
-}
-
 interface PostPagination {
   next_page: string;
   results: Post[];
@@ -30,11 +26,22 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ posts }: Posts) {
+export default function Home({ postsPagination }: HomeProps) {
+  async function handleLoadPosts() {
+    const response = await fetch(postsPagination.next_page, {
+      method: 'get',
+      headers: {
+        oauth_token: process.env.PRISMIC_ACCESS_TOKEN,
+      },
+    });
+    const loadMorePostsResponse = response.json();
+    return loadMorePostsResponse;
+  }
+
   return (
     <main className={`${styles.homeContainer} ${commonStyles.container}`}>
       <div>
-        {posts?.map(post => {
+        {postsPagination?.results.map(post => {
           return (
             <Link href="#">
               <strong>{post.data.title}</strong>
@@ -52,36 +59,19 @@ export default function Home({ posts }: Posts) {
             </Link>
           );
         })}
-        {/* <Link href="#">
-          <strong>Title</strong>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis
-            quidem voluptates voluptatum perferendis tempora fugit eos similique
-            voluptas, est doloribus quod inventore maxime nulla autem laudantium
-            qui, suscipit, ad excepturi!
-          </p>
-          <div>
-            <span>
-              <FiCalendar />
-              19 abr 2021
-            </span>
-            <span>
-              <FiUser />
-              Adriana Calcanhoto
-            </span>
-          </div>
-        </Link> */}
       </div>
-      <a className={styles.loadMore}>Carregar mais posts</a>
+      <button className={styles.loadMore} onClick={handleLoadPosts}>
+        Carregar mais posts
+      </button>
     </main>
   );
 }
 
 export const getStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsResponse = await prismic.getByType('posts', { pageSize: 20 });
-
-  const posts = postsResponse.results.map(post => {
+  const postsResponse = await prismic.getByType('posts', { pageSize: 2 });
+  console.log(postsResponse);
+  const results = postsResponse.results.map(post => {
     return {
       uid: post.uid,
       first_publication_date: post.first_publication_date,
@@ -93,5 +83,10 @@ export const getStaticProps = async () => {
     };
   });
 
-  return { props: { posts } };
+  const postsPagination = {
+    next_page: postsResponse.next_page,
+    results: results,
+  };
+
+  return { props: { postsPagination } };
 };

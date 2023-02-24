@@ -46,7 +46,11 @@
 }
 
 .loadMore {
-  display: block;
+  // display: block;
+  background: transparent;
+  border: 0;
+  width: 15rem;
+  text-align: left;
   color: var(--magenta-500);
   font-weight: 700;
   font-size: 1.125rem;
