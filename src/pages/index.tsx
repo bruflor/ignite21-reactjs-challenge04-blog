@@ -6,6 +6,7 @@ import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import { useState } from 'react';
 
 interface Post {
   uid?: string;
@@ -27,23 +28,25 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps) {
-  async function handleLoadPosts() {
-    const response = await fetch(postsPagination.next_page, {
-      method: 'get',
-      headers: {
-        oauth_token: process.env.PRISMIC_ACCESS_TOKEN,
-      },
-    });
-    const loadMorePostsResponse = response.json();
-    return loadMorePostsResponse;
+  const [posts, setPosts] = useState(postsPagination.results);
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
+
+  function handleLoadPosts() {
+    const response = fetch(nextPage)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.results);
+        setPosts(state => [...state, ...data.results]);
+        setNextPage(data.next_page);
+      });
   }
 
   return (
     <main className={`${styles.homeContainer} ${commonStyles.container}`}>
       <div>
-        {postsPagination?.results.map(post => {
+        {posts.map(post => {
           return (
-            <Link href="#">
+            <Link href={`/posts/${post.uid}`} key={post.uid}>
               <strong>{post.data.title}</strong>
               <p>{post.data.subtitle}</p>
               <div>
@@ -60,17 +63,21 @@ export default function Home({ postsPagination }: HomeProps) {
           );
         })}
       </div>
-      <button className={styles.loadMore} onClick={handleLoadPosts}>
-        Carregar mais posts
-      </button>
+      {nextPage ? (
+        <button className={styles.loadMore} onClick={handleLoadPosts}>
+          Carregar mais posts
+        </button>
+      ) : (
+        ''
+      )}
     </main>
   );
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsResponse = await prismic.getByType('posts', { pageSize: 2 });
-  console.log(postsResponse);
+  const postsResponse = await prismic.getByType('posts', { pageSize: 1 });
+
   const results = postsResponse.results.map(post => {
     return {
       uid: post.uid,
